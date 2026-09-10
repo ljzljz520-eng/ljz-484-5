@@ -1,0 +1,62 @@
+[
+  {
+    "id": "c_seed_kyoto_1",
+    "guideId": "g_seed_kyoto",
+    "title": "抵达京都：从关西机场到市区",
+    "content": "## 交通方式\n\n从关西机场到京都站最省心的是 **HARUKA 特急**，约 80 分钟。提前在网上购买折扣票更划算。\n\n## 小贴士\n\n- 抵达后先在京都站购买巴士一日券\n- 住宿推荐四条河原町附近，吃饭交通都方便",
+    "imageUrl": null,
+    "imageCaption": "",
+    "status": "published",
+    "order": 1,
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  },
+  {
+    "id": "c_seed_kyoto_2",
+    "guideId": "g_seed_kyoto",
+    "title": "清水寺与二年坂三年坂",
+    "content": "建议早上七点前到达清水寺，避开旅行团。沿二年坂、三年坂一路下行，两边是保留完好的町屋店铺。\n\n午餐可以尝试一碗热腾腾的汤豆腐。",
+    "imageUrl": "/uploads/seed_mtv782h3foq4jh.svg",
+    "imageCaption": "清晨的清水寺舞台，游客稀少",
+    "status": "published",
+    "order": 2,
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  },
+  {
+    "id": "c_seed_kyoto_3",
+    "guideId": "g_seed_kyoto",
+    "title": "岚山竹林与小火车（草稿）",
+    "content": "这一章还在整理照片与时刻表，先保存为草稿，稍后继续补充……",
+    "imageUrl": "/uploads/seed_mtv782h4nr8o6t.svg",
+    "imageCaption": "岚山竹林的光影（待补写）",
+    "status": "draft",
+    "order": 3,
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  },
+  {
+    "id": "c_seed_chengdu_1",
+    "guideId": "g_seed_chengdu",
+    "title": "宽窄巷子的清晨",
+    "content": "## 行程\n\n游客还没涌进来的宽窄巷子最有味道。找一家老茶馆，一碗盖碗茶配一碟瓜子，可以坐一上午。\n\n> 提示：工作日早上 9 点前到，拍照几乎没人。",
+    "imageUrl": "/uploads/seed_mtv782h40sa4ow.svg",
+    "imageCaption": "巷子里的盖碗茶",
+    "status": "published",
+    "order": 1,
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  },
+  {
+    "id": "c_seed_chengdu_2",
+    "guideId": "g_seed_chengdu",
+    "title": "火锅清单（待定稿）",
+    "content": "正在对比三家口碑火锅店的排队时长与招牌菜……",
+    "imageUrl": null,
+    "imageCaption": "",
+    "status": "draft",
+    "order": 2,
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  }
+]

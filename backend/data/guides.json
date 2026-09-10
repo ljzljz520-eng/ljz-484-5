@@ -1,0 +1,33 @@
+[
+  {
+    "id": "g_seed_kyoto",
+    "title": "京都四日慢游记",
+    "destination": "日本 · 京都",
+    "summary": "用四天时间穿梭在神社、竹林与町屋之间，记录一条适合第一次到访京都的轻松路线，附交通与预算建议。",
+    "coverImage": "/uploads/seed_mtv782h3pr4j18.svg",
+    "status": "published",
+    "tags": [
+      "日本",
+      "自由行",
+      "古都",
+      "4天3晚"
+    ],
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  },
+  {
+    "id": "g_seed_chengdu",
+    "title": "成都周末吃喝地图",
+    "destination": "中国 · 成都",
+    "summary": "一个正在连载中的草稿：火锅、茶馆与巷子里的小吃。",
+    "coverImage": "/uploads/seed_mtv782h3jl96l3.svg",
+    "status": "draft",
+    "tags": [
+      "中国",
+      "美食",
+      "周末"
+    ],
+    "createdAt": "2026-09-10T07:21:23.081Z",
+    "updatedAt": "2026-09-10T07:21:23.081Z"
+  }
+]

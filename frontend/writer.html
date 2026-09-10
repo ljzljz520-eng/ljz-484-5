@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作者工作台 · 旅途连载</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="bar">
+      <a class="logo" href="index.html">🧭 旅途连载</a>
+      <nav>
+        <a href="index.html">读者端</a>
+        <a href="writer.html" class="active">作者工作台</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">作者工作台</h1>
+    <p class="page-sub">
+      创建目的地攻略与连载章节，随时保存草稿，发布后读者即可阅读；也可以一键导出 Markdown 全文。
+    </p>
+
+    <div class="toolbar">
+      <button class="btn primary" id="btnNewGuide">＋ 新建攻略</button>
+      <span class="spacer"></span>
+      <input type="search" id="searchBox" placeholder="按标题 / 目的地筛选…" style="max-width:260px">
+    </div>
+
+    <div id="guideAdminList"><div class="loading">加载中…</div></div>
+  </main>
+
+  <!-- 攻略编辑弹窗 -->
+  <div class="modal-mask" id="guideModalMask">
+    <div class="modal">
+      <h3 id="guideModalTitle">新建攻略</h3>
+      <div class="form-row">
+        <label>攻略标题 <span class="hint">例如：京都四日慢游记</span></label>
+        <input type="text" name="title" maxlength="80">
+      </div>
+      <div class="form-row">
+        <label>目的地</label>
+        <input type="text" name="destination" maxlength="80" placeholder="国家 / 城市">
+      </div>
+      <div class="form-row">
+        <label>简介</label>
+        <textarea name="summary" rows="3" maxlength="500" placeholder="给读者的一段话…"></textarea>
+      </div>
+      <div class="form-row">
+        <label>标签 <span class="hint">用逗号分隔，如：日本,自由行,4天3晚</span></label>
+        <input type="text" name="tags" placeholder="日本, 自由行, 美食">
+      </div>
+      <div class="form-row">
+        <label>封面图</label>
+        <div class="upload-box">
+          <input type="file" name="coverFile" accept="image/*">
+          <div>或填写图片 URL：<input type="text" name="coverImage" placeholder="/uploads/xxx.jpg 或 https://…" style="margin-top:6px"></div>
+          <img class="thumb" name="coverThumb" style="display:none" alt="封面预览">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" data-close>取消</button>
+        <button class="btn primary" id="btnSaveGuide">保存攻略</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章节编辑弹窗 -->
+  <div class="modal-mask" id="chapterModalMask">
+    <div class="modal">
+      <h3 id="chapterModalTitle">新增章节</h3>
+      <div class="form-row">
+        <label>章节标题</label>
+        <input type="text" name="title" maxlength="120">
+      </div>
+      <div class="form-row">
+        <label>正文 <span class="hint">支持 Markdown 语法</span></label>
+        <textarea name="content" placeholder="## 小标题&#10;&#10;在这里写下这一章的内容……"></textarea>
+      </div>
+      <div class="form-row">
+        <label>章节配图</label>
+        <div class="upload-box">
+          <input type="file" name="imageFile" accept="image/*">
+          <div>或填写图片 URL：<input type="text" name="imageUrl" style="margin-top:6px"></div>
+          <img class="thumb" name="imageThumb" style="display:none" alt="配图预览">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>图片说明</label>
+        <input type="text" name="imageCaption" maxlength="120" placeholder="将以斜体显示在图片下方，并随全文导出">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" data-close>取消</button>
+        <button class="btn" id="btnSaveDraft">保存为草稿</button>
+        <button class="btn amber" id="btnSavePublish">保存并发布</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/writer.js"></script>
+</body>
+</html>

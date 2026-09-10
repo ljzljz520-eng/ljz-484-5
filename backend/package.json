@@ -1,0 +1,16 @@
+{
+  "name": "travel-guide-backend",
+  "version": "1.0.0",
+  "description": "旅行攻略连载系统 - 后端服务（Express + 本地 JSON 文件存储）",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
