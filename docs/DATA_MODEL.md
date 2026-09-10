@@ -61,6 +61,8 @@ backend/
 
 ## 4. 关系与一致性规则
 
+> 说明：接口返回中的 `totalChapters` / `publishedChapters` 是读取时根据章节表**实时统计**的派生字段，不落盘存储。
+
 ```
 Guide 1 ──── n Chapter      （chapter.guideId -> guide.id）
 ```

@@ -10,6 +10,11 @@ const { genId, now } = require('./utils');
 
 const UPLOAD_DIR = path.join(__dirname, '..', 'uploads');
 
+// 清理上一次 seed 生成的占位图，避免重复运行产生孤立文件
+fs.readdirSync(UPLOAD_DIR)
+  .filter((name) => /^seed_.*\.svg$/.test(name))
+  .forEach((name) => fs.rmSync(path.join(UPLOAD_DIR, name)));
+
 /** 生成一张极简 SVG 占位图并写入 uploads，返回可访问 URL */
 function placeholder(text, bg = '#0d7377') {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420">
@@ -85,7 +90,7 @@ const chapters = [
   {
     id: 'c_seed_kyoto_3',
     guideId: guideKyoto.id,
-    title: '岚山竹林与小火车（草稿）',
+    title: '岚山竹林与小火车',
     content: '这一章还在整理照片与时刻表，先保存为草稿，稍后继续补充……',
     imageUrl: img12,
     imageCaption: '岚山竹林的光影（待补写）',

@@ -40,7 +40,14 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   upload.single('file')(req, res, (err) => {
-    if (err) return res.status(400).json({ error: err.message });
+    if (err) {
+      const code = err.code || '';
+      if (code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: '图片不能超过 5MB' });
+      }
+      // 其余 multer 错误（类型不被允许等）统一按请求错误处理
+      return res.status(400).json({ error: err.message || '上传失败' });
+    }
     if (!req.file) return res.status(400).json({ error: '未收到上传文件' });
     res.status(201).json({
       filename: req.file.filename,

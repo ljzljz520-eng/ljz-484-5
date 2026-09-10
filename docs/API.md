@@ -24,7 +24,10 @@
 curl 'http://localhost:3000/api/guides?status=all'
 ```
 
-响应：`200` Guide 数组，按 `updatedAt` 倒序。
+响应：`200` Guide 数组，按 `updatedAt` 倒序。每项额外附带章数统计：
+
+- `totalChapters`：章节总数（含草稿）
+- `publishedChapters`：已发布章节数（读者首页展示用）
 
 ### POST /api/guides — 新建攻略
 
@@ -54,8 +57,8 @@ curl 'http://localhost:3000/api/guides/g_xxx'            # 读者视角
 curl 'http://localhost:3000/api/guides/g_xxx?manage=1'   # 作者视角（可见草稿）
 ```
 
-响应：`200` Guide 对象，附带 `toc` 数组（章节 id / title / order / status / imageCaption / imageUrl，不含正文）。
-草稿攻略在读者视角返回 `404`。
+响应：`200` Guide 对象，附带 `toc` 数组（章节 id / title / order / status / imageCaption / imageUrl，不含正文）以及 `totalChapters` / `publishedChapters` 统计。
+草稿攻略在读者视角返回 `404`；读者视角的 `toc` 同样只含已发布章节（草稿章节标题不泄露）。
 
 ### PUT /api/guides/:id — 更新攻略
 
@@ -84,6 +87,7 @@ curl -OJ 'http://localhost:3000/api/guides/g_xxx/export?include=drafts'
 
 响应：`200`，`Content-Type: text/markdown`，`Content-Disposition: attachment`（文件名为「目的地-标题.md」）。
 导出内容包含：标题、目的地、标签、简介、各章正文及图片说明（`![说明](url)` + 斜体图注）。
+`include=drafts` 时草稿章节也会导出，并在章节标题后追加「（草稿·未发布）」标注。
 
 ---
 

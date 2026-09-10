@@ -4,16 +4,27 @@
  *       > 引用、--- 分隔线、![图片](url)、[链接](url)、段落与换行。
  */
 (function () {
+  /** 危险协议过滤：仅放行相对地址与常见安全协议 */
+  function safeUrl(url) {
+    // 已 HTML 转义，冒号仍是 ':'；协议名不含 / # ?（避免误杀 "/x:y" 这类路径）
+    const head = url.slice(0, url.search(/[/#?]/) === -1 ? url.length : url.search(/[/#?]/));
+    if (/^[a-z][a-z0-9+.-]*:/i.test(head)) {
+      return /^(https?|mailto):$/i.test(head);
+    }
+    // 协议相对地址 //host/... 与站内相对地址均允许
+    return true;
+  }
+
   /** 行内语法：图片 / 链接 / 粗体 / 斜体 / 代码 */
   function inline(text) {
     let t = text;
-    // 过滤危险协议（此时 HTML 已转义，引号无法逃逸属性）
+    // 此时 HTML 已转义，引号无法逃逸属性
     t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (m, alt, url) => {
-      if (/^javascript:/i.test(url)) return alt;
+      if (!safeUrl(url)) return alt;
       return `<img src="${url}" alt="${alt}" loading="lazy">`;
     });
     t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, url) => {
-      if (/^javascript:/i.test(url)) return label;
+      if (!safeUrl(url)) return label;
       return `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
     });
     t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -29,6 +40,7 @@
     const out = [];
     let para = [];
     let inList = false;
+    let quote = [];
 
     const flushPara = () => {
       if (para.length) {
@@ -39,30 +51,38 @@
     const closeList = () => {
       if (inList) { out.push('</ul>'); inList = false; }
     };
+    const flushQuote = () => {
+      if (quote.length) {
+        flushPara(); closeList();
+        out.push('<blockquote>' + quote.map(inline).join('<br>') + '</blockquote>');
+        quote = [];
+      }
+    };
 
     for (const raw of lines) {
       const line = raw.trim();
       let m;
-      if (!line) { flushPara(); closeList(); continue; }
+      if (!line) { flushPara(); closeList(); flushQuote(); continue; }
       if ((m = line.match(/^###\s+(.*)/))) {
-        flushPara(); closeList(); out.push('<h3>' + inline(m[1]) + '</h3>');
+        flushPara(); closeList(); flushQuote(); out.push('<h3>' + inline(m[1]) + '</h3>');
       } else if ((m = line.match(/^##\s+(.*)/))) {
-        flushPara(); closeList(); out.push('<h2>' + inline(m[1]) + '</h2>');
+        flushPara(); closeList(); flushQuote(); out.push('<h2>' + inline(m[1]) + '</h2>');
       } else if ((m = line.match(/^#\s+(.*)/))) {
-        flushPara(); closeList(); out.push('<h2>' + inline(m[1]) + '</h2>');
+        flushPara(); closeList(); flushQuote(); out.push('<h2>' + inline(m[1]) + '</h2>');
       } else if (/^(-{3,}|\*{3,})$/.test(line)) {
-        flushPara(); closeList(); out.push('<hr>');
+        flushPara(); closeList(); flushQuote(); out.push('<hr>');
       } else if ((m = line.match(/^&gt;\s?(.*)/))) {
-        flushPara(); closeList(); out.push('<blockquote>' + inline(m[1]) + '</blockquote>');
+        flushPara(); closeList(); quote.push(m[1]);
       } else if ((m = line.match(/^[-*]\s+(.*)/))) {
-        flushPara();
+        flushPara(); flushQuote();
         if (!inList) { out.push('<ul>'); inList = true; }
         out.push('<li>' + inline(m[1]) + '</li>');
       } else {
+        flushQuote();
         para.push(line);
       }
     }
-    flushPara(); closeList();
+    flushPara(); closeList(); flushQuote();
     return out.join('\n');
   };
 })();

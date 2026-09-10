@@ -28,13 +28,26 @@ function sortGuides(rows) {
   return [...rows].sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
 }
 
+/** 为攻略附加章数统计：publishedChapters（读者可见）/ totalChapters（全部） */
+function withChapterCounts(guides) {
+  const chapters = db.chapters.all();
+  return guides.map((g) => {
+    const own = chapters.filter((c) => c.guideId === g.id);
+    return {
+      ...g,
+      totalChapters: own.length,
+      publishedChapters: own.filter((c) => c.status === 'published').length,
+    };
+  });
+}
+
 // GET /api/guides?status=published|draft|all
 // 读者端默认只看到已发布；作者端传 all 可看到全部
 router.get('/', (req, res) => {
   const status = req.query.status || 'published';
   let rows = db.guides.all();
   if (status !== 'all') rows = rows.filter((g) => g.status === status);
-  res.json(sortGuides(rows));
+  res.json(withChapterCounts(sortGuides(rows)));
 });
 
 // GET /api/guides/:id  攻略详情 + 章节目录（按 order 排序）
@@ -42,20 +55,25 @@ router.get('/:id', (req, res) => {
   const guide = db.guides.all().find((g) => g.id === req.params.id);
   if (!guide) return res.status(404).json({ error: '攻略不存在' });
 
-  // 未发布攻略对读者端隐藏（作者端通过 ?manage=1 查看）
   const viewerIsAuthor = req.query.manage === '1';
   if (guide.status === 'draft' && !viewerIsAuthor) {
     return res.status(404).json({ error: '攻略不存在或尚未发布' });
   }
 
-  const chapters = db.chapters
+  let chapters = db.chapters
     .all()
     .filter((c) => c.guideId === guide.id)
     .sort((a, b) => a.order - b.order);
+  // 读者视角目录同样不暴露草稿章节标题
+  if (!viewerIsAuthor) {
+    chapters = chapters.filter((c) => c.status === 'published');
+  }
 
   res.json({
     ...guide,
-    // 目录摘要（不含正文，读者端列表页用）
+    totalChapters: db.chapters.all().filter((c) => c.guideId === guide.id).length,
+    publishedChapters: chapters.length,
+    // 目录摘要（不含正文，阅读页/工作台用于渲染目录）
     toc: chapters.map(({ id, title, order, status, imageCaption, imageUrl }) => ({
       id,
       title,
@@ -181,7 +199,8 @@ router.get('/:id/export', (req, res) => {
   }
 
   chapters.forEach((ch, i) => {
-    lines.push(`## 第 ${i + 1} 章 ${ch.title}`);
+    const draftTag = includeDrafts && ch.status === 'draft' ? '（草稿·未发布）' : '';
+    lines.push(`## 第 ${i + 1} 章 ${ch.title}${draftTag}`);
     lines.push('');
     if (ch.imageUrl) {
       lines.push(`![${ch.imageCaption || ch.title}](${ch.imageUrl})`);
